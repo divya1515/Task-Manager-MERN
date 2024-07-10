@@ -11,7 +11,7 @@ connectDB()
     })
     app.on("error",(error)=>{
         console.log("SERVER RUNTIME PROBLEM WHILE LISTENING",error)
-        throw error;
+       
     })
 
 }).catch((error)=>{
