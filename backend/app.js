@@ -9,7 +9,7 @@ app.use((err,req,res,next)=>{
     const message=err.message || "Backend Error";
     return res.status(statusCode).json({
         success:false,
-        message:message,
+        message,
         statusCode
     })
 })

@@ -7,13 +7,13 @@ export const registerUser=async(req,res,next)=>{
     if(
         [username,email,password].some((feild)=>feild?.trim()=="")
     ){
-        return next(ErrorHandler(401,"All feilds are required"));
+        return res.status(401).json({message: "All feilds are required" });
     }
     const existedUser=await User.findOne({
         $or:[{email},{username}]
      })
      if(existedUser){
-        return next(ErrorHandler(401,"User already exist"))
+      return res.status(401).json({message: "User already exist" });
      }
      const hashedPassword=bcryptjs.hashSync(password,10);
      const user=await User.create({
@@ -25,7 +25,7 @@ export const registerUser=async(req,res,next)=>{
         "-password"
      )
      if(!createduser){
-       return next(ErrorHandler(500,"Internal server error"))
+       return res.status(500).json({message: "Internal server error"})
      }
      return res.status(200).json({message:"User created successfully"})
 }
