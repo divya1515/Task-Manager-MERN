@@ -37,7 +37,7 @@ function SignIn(){
             seterrmsg(data.message)
            }else{
             dispatch(signInsuccess(data))
-            navigate('/')
+            navigate('/task')
            }
 
           }catch(err){
