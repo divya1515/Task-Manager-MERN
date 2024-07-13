@@ -1,25 +1,29 @@
 import React,{useEffect, useState} from "react";
 import {Link, useNavigate} from 'react-router-dom'
-import { Navigate } from "react-router-dom";
+import { signInstart,
+         signInFailure,
+         signInsuccess
+ } from "../redux/user/UserSlice";
+ import {useSelector,useDispatch} from 'react-redux'
 function SignIn(){
     const [formData,setformData]=useState({
       email:"",
       password:""
     })
     const navigate=useNavigate();
-    const [error,seterror]=useState(false)
-    const [user,setuser]=useState({})
+    const dispatch=useDispatch()
     const [errmsg,seterrmsg]=useState()
-    const [success,setsuccess]=useState("")
     const handleChange=(e)=>{
       setformData((prev)=>({
          ...prev,
          [e.target.id]:e.target.value
       }))
     }
+    const {error,loading}=useSelector((state)=>state.user)
     const handleSubmit=async(e)=>{
        e.preventDefault();
        try{
+            dispatch(signInstart())
            const res=await fetch('/api/v1/users/signin',{
              method:'POST',
              headers:{
@@ -28,23 +32,17 @@ function SignIn(){
              body: JSON.stringify(formData)
            })
            const data=await res.json()
-           console.log(data)
            if(!res.ok){
-            seterror(true);
+            dispatch(signInFailure())
             seterrmsg(data.message)
-            setsuccess("");
            }else{
-            setsuccess(true);
-            seterror(false);
-            seterrmsg("");
-            setuser(data)
+            dispatch(signInsuccess(data))
             navigate('/')
            }
 
           }catch(err){
-        seterror(true);
-        seterrmsg("Something went wrong")
-        setsuccess("");
+            dispatch(signInFailure());
+            seterrmsg("Something went wrong")
        }
     }
     useEffect(()=>{
@@ -52,7 +50,7 @@ function SignIn(){
         email:"",
         password:""
       })
-    },[error,success])
+    },[error])
     return(
         <>
         <div className='p-3 max-w-lg mx-auto'>
@@ -75,9 +73,10 @@ function SignIn(){
             onChange={handleChange}
           />
           <button
+             disabled={loading}
             className='bg-cyan-700 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80'
           >
-           SignIn
+          {loading ? 'Loading...' : 'SignIn'}
           </button>
         </form>
         <div className='flex gap-2 mt-5'>
