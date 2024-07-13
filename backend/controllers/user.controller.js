@@ -33,15 +33,15 @@ export const registerUser=async(req,res,next)=>{
 export const signIn=async(req,res,next)=>{
    const {email,password}=req.body;
    if(email.trim()==""){
-      return next(ErrorHandler(400,"Email is required"))
+      return res.status(400).json({message:"Email is required"})
    }
    const user=await User.findOne({email})
    if(!user){
-      return next(ErrorHandler(400,"User does not exist"))
+      return res.status(400).json({message:"User does not exist"})
    }
    const validPassword=bcryptjs.compareSync(password,user.password);
    if(!validPassword){
-      return next(ErrorHandler(402,"Credentials are not correct"))
+      return res.status(402).json({message:"Credentials are not correct"})
    }
    const token=jwt.sign(
       {id:user._id},
