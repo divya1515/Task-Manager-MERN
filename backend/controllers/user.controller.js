@@ -2,6 +2,7 @@ import { ErrorHandler } from "../utils/error.util.js"
 import {User} from "../models/user.models.js"
 import bcryptjs from 'bcryptjs'
 import jwt from 'jsonwebtoken'
+import {verifyToken} from '../middleware/auth.middleware.js'
 export const registerUser=async(req,res,next)=>{
     const {username,email,password}=req.body;
     if(
@@ -57,4 +58,18 @@ export const signIn=async(req,res,next)=>{
    .status(200)
    .cookie('accessToken',token,options)
    .json(LoggedInUser)
+}
+
+export const SignOut=async(req,res)=>{
+    const options={
+      httpOnly:true
+    }
+    return res
+    .status(200)
+    .clearCookie("accessToken",options)
+    .json({message:"User logged out successfully"})
+}
+
+export const CheckAuth=async(req,res)=>{
+   return res.status(200).json(req.user)
 }

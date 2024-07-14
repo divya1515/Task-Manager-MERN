@@ -1,14 +1,14 @@
 import jwt from 'jsonwebtoken'
-import {User} from '../models/user.models'
+import {User} from '../models/user.models.js'
 
 export const verifyToken=async(req,res,next)=>{
     try{
-    const token=req.cookies?.accessToken;
+    const token=req.cookies?.accessToken
     if(!token)
     {
         return res.status(400).json({message:"Unauthorized request"});
     }
-    const decodedtoken=jwt.verifyToken(token,process.env.JWT_SECRET);
+    const decodedtoken=jwt.verify(token,process.env.JWT_SECRET);
     const user=await User.findById(decodedtoken.id).select("-password");
     if(!user){
         return res.status(405).json({message:"Unauthorized request"});
