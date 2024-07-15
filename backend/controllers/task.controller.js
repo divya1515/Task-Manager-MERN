@@ -9,7 +9,7 @@ export const createTask=async(req,res)=>{
         description,
         owner:req.user._id
     })
-    return res.status(200).json({message:"Task created successfully"})
+    return res.status(200).json({message:"Task created successfully",data:task})
 }catch(error){
     return res.status(500).json({message:"Something went wrong"})
 }

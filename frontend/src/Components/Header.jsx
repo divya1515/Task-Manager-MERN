@@ -11,6 +11,7 @@ function Header() {
     const dispatch=useDispatch()
     const navigate=useNavigate()
     const {currentuser}=useSelector((state)=>state.user)
+   
     const handleLogout=async()=>{
         const res=await fetch('/api/v1/users/signOut',{
             method:'GET',

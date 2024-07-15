@@ -1,22 +1,38 @@
 import React, { useState } from 'react'
 import Button from '../Components/Button'
 import { useNavigate } from 'react-router-dom';
+import { addNewTask } from '../redux/task/TaskSlice';
 import { useDispatch, useSelector } from 'react-redux';
 function AddNewTask(){
-    const [desc,setdesc]=useState();
+    const [desc,setdesc]=useState("");
     const dispatch=useDispatch();
     const navigate=useNavigate()
     const {currentuser}=useSelector((state)=>state.user)
     const handleChange=(e)=>{
-        console.log(currentuser);
-        setdesc(e.taget.value)
+        setdesc(e.target.value)
     }
-    const Add=(e)=>{
-        e.preventDefault();
-        
+    const AddTask=async()=>{
+        try{
+        const res=await fetch('/api/v1/task/addTask',{
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body:JSON.stringify({description:desc})
+        })
+        const data=await res.json();
+        console.log(res)
+        if(res.ok){
+        dispatch(addNewTask(data.data))
+        navigate('/task');
+        }
+    }catch(error){
+     alert("Sorry");
+     navigate('/task')
+    }
+
     }
     const Cancel=(e)=>{
-       e.preventDefault();
        setdesc("");
        navigate('/task')
     }
@@ -35,7 +51,7 @@ function AddNewTask(){
              onChange={handleChange}
              />
              <div className='flex space-x-4 pt-6'>
-                 <Button text="Add Task" className="bg-sky-600 text-white" onClick={Add}/>
+                 <Button text="Add Task" className="bg-sky-600 text-white" onClick={AddTask}/>
                  <Button text="Cancel" className="bg-red-600 text-white" onClick={Cancel}/>
              </div>
              </div>
