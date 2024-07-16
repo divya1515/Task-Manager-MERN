@@ -1,62 +1,60 @@
-import React,{useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from 'react-router-dom'
 function SignUp() {
-    const [formData,setformData]=useState({
-        username:'',
-        email:'',
-        password:""
+    const [formData, setformData] = useState({
+        username: '',
+        email: '',
+        password: ""
     })
-    const navigate=useNavigate()
-    const [error,seterror]=useState(false)
-    const [errmsg,seterrmsg]=useState()
-    const [success,setsuccess]=useState("")
-    const handleChange=(e)=>{
-        setformData((prev)=>({
-             ...prev,
-             [e.target.id]:e.target.value
+    const navigate = useNavigate()
+    const [error, seterror] = useState(false)
+    const [errmsg, seterrmsg] = useState()
+    const [success, setsuccess] = useState("")
+    const handleChange = (e) => {
+        setformData((prev) => ({
+            ...prev,
+            [e.target.id]: e.target.value
         }))
     }
-    const handleSubmit=async(e)=>{
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        try{
-        seterror(false)
-        setsuccess("")
-        const res=await fetch('/api/v1/users/register',{
-            method:'POST',
-            headers:{
-                'Content-Type': 'application/json',
-            },
-            body:JSON.stringify(formData)
-        })
-        const data=await res.json();
-        if(!res.ok)
-        {
+        try {
+            seterror(false)
+            setsuccess("")
+            const res = await fetch('/api/v1/users/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData)
+            })
+            const data = await res.json();
+            if (!res.ok) {
+                seterror(true);
+                seterrmsg(data.message)
+                setsuccess("");
+            }
+            else {
+                setsuccess(data.message);
+                seterror(false);
+                seterrmsg("");
+
+            }
+            navigate('/sign-in')
+        } catch (error) {
             seterror(true);
-            seterrmsg(data.message)
+            seterrmsg("Something went wrong")
             setsuccess("");
         }
-        else
-        {
-            setsuccess(data.message);
-            seterror(false);
-            seterrmsg("");
-
-        }
-        navigate('/sign-in')
-    }catch(error){
-        seterror(true);
-         seterrmsg("Something went wrong")
-         setsuccess("");
     }
-    }
-    useEffect(()=>{
+    useEffect(() => {
         setformData({
             username: '',
             email: '',
             password: ''
         })
-    },[errmsg,success])
+    }, [errmsg, success])
     return (
         <>
             <div className='p-3 max-w-lg mx-auto'>
@@ -76,7 +74,7 @@ function SignUp() {
                         id='email'
                         value={formData.email}
                         className='bg-slate-100 p-3 rounded-lg'
-onChange={handleChange}
+                        onChange={handleChange}
                     />
                     <input
                         type='password'
@@ -84,7 +82,7 @@ onChange={handleChange}
                         id='password'
                         value={formData.password}
                         className='bg-slate-100 p-3 rounded-lg'
-onChange={handleChange}
+                        onChange={handleChange}
                     />
                     <button
 

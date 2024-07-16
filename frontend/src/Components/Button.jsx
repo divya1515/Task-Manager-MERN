@@ -6,12 +6,12 @@ function Button({
     text,
     onClick
 
-}){
-    return(
+}) {
+    return (
         <>
-        <button className={`p-3 flex items-center ${className}`} onClick={onClick}>
-            {icon}
-            {text}
+            <button className={`p-3 flex items-center ${className}`} onClick={onClick}>
+                {icon}
+                {text}
             </button>
         </>
     )
