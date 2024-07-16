@@ -14,21 +14,27 @@ import EditTask from './pages/EditTask'
 
 function App() {
   const dispatch = useDispatch()
-  useEffect(async () => {
-    const res = await fetch('/api/v1/users/verify', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
+  useEffect(() => {
+    const checkAuth = async () => {
+      const res = await fetch('/api/v1/users/verify', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        credentials: 'include' 
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        dispatch(signOut());
+      } else {
+        dispatch(signInsuccess(data));
       }
-    })
-    const data = await res.json();
-    if (!res.ok) {
-      dispatch(signOut())
-    }
-    else {
-      dispatch(signInsuccess(data))
-    }
-  }, [])
+    };  
+    checkAuth();
+  }, [dispatch]);
+
   return (
     <>
       <BrowserRouter>

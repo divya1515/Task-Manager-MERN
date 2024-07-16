@@ -27,12 +27,9 @@ function Task() {
     }
 
   }, [dispatch])
+
   useEffect(() => {
-    if (!currentuser) return
-    fetchTask();
-  }, [currentuser, fetchTask])
-  useEffect(() => {
-    if (location.pathname === '/task' && currentuser) {
+    if (location.pathname.includes('/task') && currentuser) {
       fetchTask();
     }
   }, [location, currentuser, fetchTask]);
