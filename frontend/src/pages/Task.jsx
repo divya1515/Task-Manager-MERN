@@ -1,6 +1,7 @@
 import React, { useCallback, useState, useEffect } from "react"
 import { useSelector, useDispatch } from 'react-redux'
 import { FetchTask, FetchTaskFailure, FetchTaskStart } from '../redux/task/TaskSlice'
+import useFetchTask from "../hooks/useFetchTask"
 import Card from '../Components/Card'
 import { useLocation } from "react-router-dom"
 function Task() {
@@ -8,7 +9,14 @@ function Task() {
   const { tasks, loading, error } = useSelector((state) => state.task);
   const dispatch = useDispatch()
   const location = useLocation()
-  
+
+  const fetchTask = useFetchTask([currentuser]);
+
+  useEffect(() => {
+    if (currentuser) {
+      fetchTask();
+    }
+  }, [fetchTask, currentuser]);
   return (
       <div className="p-6 text-lg">
         <h1>Welcome {currentuser.username}</h1>

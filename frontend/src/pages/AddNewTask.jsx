@@ -3,10 +3,12 @@ import Button from '../Components/Button'
 import { useNavigate } from 'react-router-dom';
 import { addNewTask } from '../redux/task/TaskSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import useFetchTask from '../hooks/useFetchTask'
 function AddNewTask() {
     const [desc, setdesc] = useState("");
     const dispatch = useDispatch();
     const navigate = useNavigate()
+    const fetchtask=useFetchTask()
     const { currentuser } = useSelector((state) => state.user)
     const handleChange = (e) => {
         setdesc(e.target.value)
@@ -23,8 +25,7 @@ function AddNewTask() {
             const data = await res.json();
             console.log(res)
             if (res.ok) {
-                console.log(data)
-                dispatch(addNewTask(data.data))
+                fetchtask()
                 navigate('/task');
             }
         } catch (error) {
