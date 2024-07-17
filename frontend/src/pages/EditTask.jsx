@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import Button from '../Components/Button'
-
+import useFetchTask from '../hooks/useFetchTask';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 function EditTask() {
@@ -10,6 +10,7 @@ function EditTask() {
     const task = location.state?.task;
     const [desc, setdesc] = useState(task ? task.description : "");
     const dispatch = useDispatch();
+    const fetchTask = useFetchTask(); 
     const handleChange = (e) => {
         setdesc(e.target.value)
     }
@@ -23,6 +24,7 @@ function EditTask() {
                 body: JSON.stringify({ description: desc })
             })
             if (res.ok) {
+                fetchTask()
                 navigate('/task');
             }
         } catch (error) {

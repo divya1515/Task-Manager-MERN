@@ -14,7 +14,7 @@ const TaskSlice = createSlice({
             state.loading = true
         },
         FetchTask: (state, action) => {
-            state.tasks = action.payload,
+            state.tasks = Array.isArray(action.payload) ? action.payload : [];
                 state.loading = false,
                 state.error = false
         },
@@ -26,8 +26,7 @@ const TaskSlice = createSlice({
             state.tasks.push(action.payload)
         },
         DeleteTask: (state, action) => {
-            const tasks = state.tasks
-            state.tasks = tasks.filter((task) => task._id !== action.payload)
+            state.tasks = state.tasks.filter((task) => task._id !== action.payload);
         }
     }
 })

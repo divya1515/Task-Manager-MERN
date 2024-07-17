@@ -3,13 +3,13 @@ import cookieParser from 'cookie-parser';
 import path from 'path';
 
 const app = express()
-const __dirname = path.resolve();
+// const __dirname = path.resolve();
 
-app.use(express.static(path.join(__dirname, '/frontend/dist')));
+// app.use(express.static(path.join(__dirname, '/frontend/dist')));
 
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'frontend', 'dist', 'index.html'));
-});
+// app.get('*', (req, res) => {
+//   res.sendFile(path.join(__dirname, 'frontend', 'dist', 'index.html'));
+// });
 app.use(express.urlencoded({ extended: true, limit: "16kb" }));
 app.use(express.json({ limit: "16kb" }))
 app.use(cookieParser())

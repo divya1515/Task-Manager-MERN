@@ -5,6 +5,7 @@ import {
   signInFailure,
   signInsuccess
 } from "../redux/user/UserSlice";
+import useFetchTask from "../hooks/useFetchTask"
 import { useSelector, useDispatch } from 'react-redux'
 function SignIn() {
   const [formData, setformData] = useState({
@@ -52,6 +53,15 @@ function SignIn() {
       password: ""
     })
   }, [error])
+  const { currentuser } = useSelector((state) => state.user);
+
+  const fetchTask = useFetchTask([currentuser]);
+
+  useEffect(() => {
+    if (currentuser) {
+      fetchTask();
+    }
+  }, [fetchTask, currentuser]);
   return (
     <>
       <div className='p-3 max-w-lg mx-auto'>

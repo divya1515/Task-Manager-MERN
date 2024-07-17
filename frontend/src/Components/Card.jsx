@@ -4,7 +4,7 @@ import { MdDelete } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { DeleteTask } from "../redux/task/TaskSlice";
 import { useDispatch } from "react-redux";
-
+import useFetchTask from '../hooks/useFetchTask'
 function Card(
     { task, index }
 ) {
@@ -12,6 +12,7 @@ function Card(
     const [showDeleteTooltip, setShowDeleteTooltip] = useState(false);
     const navigate = useNavigate();
     const dispatch = useDispatch()
+    const FetchTask=useFetchTask()
     const handleEdit = () => {
         navigate(`/edit/${task._id}`, { state: { task } })
     }
@@ -26,6 +27,7 @@ function Card(
 
             )
             if (res.ok) {
+                FetchTask()
                 dispatch(DeleteTask(task._id))
             }
         }

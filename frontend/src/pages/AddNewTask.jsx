@@ -23,6 +23,7 @@ function AddNewTask() {
             const data = await res.json();
             console.log(res)
             if (res.ok) {
+                console.log(data)
                 dispatch(addNewTask(data.data))
                 navigate('/task');
             }
