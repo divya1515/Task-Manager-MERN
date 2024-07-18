@@ -11,9 +11,11 @@ import { signOut, signInsuccess } from './redux/user/UserSlice'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import EditTask from './pages/EditTask'
+import useFetchTask from './hooks/useFetchTask'
 
 function App() {
   const dispatch = useDispatch()
+  const fetchTask=useFetchTask()
   useEffect(() => {
     const checkAuth = async () => {
       const res = await fetch('/api/v1/users/verify', {
@@ -30,6 +32,7 @@ function App() {
         dispatch(signOut());
       } else {
         dispatch(signInsuccess(data));
+        fetchTask()
       }
     };  
     checkAuth();

@@ -14,6 +14,7 @@ function SignIn() {
   })
   const navigate = useNavigate();
   const dispatch = useDispatch()
+  const fetchTask=useFetchTask()
   const [errmsg, seterrmsg] = useState()
   const handleChange = (e) => {
     setformData((prev) => ({
@@ -39,6 +40,7 @@ function SignIn() {
         seterrmsg(data.message)
       } else {
         dispatch(signInsuccess(data))
+        fetchTask()
         navigate('/task')
       }
 
@@ -53,15 +55,6 @@ function SignIn() {
       password: ""
     })
   }, [error])
-  const { currentuser } = useSelector((state) => state.user);
-
-  const fetchTask = useFetchTask([currentuser]);
-
-  useEffect(() => {
-    if (currentuser) {
-      fetchTask();
-    }
-  }, [fetchTask, currentuser]);
   return (
     <>
       <div className='p-3 max-w-lg mx-auto'>
